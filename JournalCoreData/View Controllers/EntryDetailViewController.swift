@@ -9,9 +9,20 @@
 import UIKit
 
 class EntryDetailViewController: UIViewController {
+    @IBOutlet var moodSegmentedControl: UISegmentedControl!
+    @IBOutlet var titleTextField: UITextField!
+    @IBOutlet var bodyTextView: UITextView!
+    
+    var entryController: EntryController?
+    
+    var entry: Entry?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateViews()
+        
+        if let _ = entry {
+            updateViews()
+        }
     }
     
     @IBAction func saveEntry(_ sender: Any) {
@@ -46,9 +57,12 @@ class EntryDetailViewController: UIViewController {
                 return
         }
         
-        title = entry.title
-        titleTextField.text = entry.title
-        bodyTextView.text = entry.bodyText
+        guard let entryTitle = entry.title else { return }
+        guard let entryBody = entry.bodyText else { return }
+        
+        title = entryTitle
+        titleTextField.text = entryTitle
+        bodyTextView.text = entryBody
         
         var segmentIndex = 0
         
@@ -66,16 +80,6 @@ class EntryDetailViewController: UIViewController {
         moodSegmentedControl.selectedSegmentIndex = segmentIndex
     }
     
-    var entry: Entry? {
-        didSet {
-            updateViews()
-        }
-    }
-    
-    var entryController: EntryController?
-    
-    @IBOutlet weak var moodSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var bodyTextView: UITextView!
+
 
 }

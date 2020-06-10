@@ -41,6 +41,7 @@ class EntriesTableViewController: UITableViewController, NSFetchedResultsControl
         return cell
     }
     
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
@@ -93,6 +94,9 @@ class EntriesTableViewController: UITableViewController, NSFetchedResultsControl
         case .delete:
             guard let indexPath = indexPath else { return }
             tableView.deleteRows(at: [indexPath], with: .automatic)
+        @unknown default:
+            NSLog("Unknown results returned from NSFetchedResultsController")
+            return
         }
     }
     
@@ -100,8 +104,9 @@ class EntriesTableViewController: UITableViewController, NSFetchedResultsControl
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
         
-        switch segue.identifier {
+        switch segue.identifier ?? "" {
         case "CreateEntry":
             guard let destinationVC = segue.destination as? EntryDetailViewController else { return }
             
@@ -111,7 +116,9 @@ class EntriesTableViewController: UITableViewController, NSFetchedResultsControl
             guard let destinationVC = segue.destination as? EntryDetailViewController,
                 let indexPath = tableView.indexPathForSelectedRow else { return }
             
-            destinationVC.entry = fetchedResultsController.object(at: indexPath)
+            
+            let selectedEntry = fetchedResultsController.object(at: indexPath)
+            destinationVC.entry = selectedEntry
             
         default:
             break

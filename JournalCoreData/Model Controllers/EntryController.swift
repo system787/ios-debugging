@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-let baseURL = URL(string: "https://journal-syncing.firebaseio.com/")!
+let baseURL = URL(string: "https://journal-1f869.firebaseio.com/")!
 
 class EntryController {
     
@@ -63,6 +63,7 @@ class EntryController {
                 return
             }
             
+            NSLog("PUT request complete")
             completion(nil)
         }.resume()
     }
